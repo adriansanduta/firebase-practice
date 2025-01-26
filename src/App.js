@@ -53,6 +53,7 @@ function App() {
       <button onClick={register}>Register</button>
       <button onClick={login}>Login</button>
       <button onClick={logout}>Logout</button>
+      {loading ? <h1>Loading...</h1> : <h1>{user?.email}</h1>}
     </div>
   );
 }
