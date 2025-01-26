@@ -1,10 +1,18 @@
 import React from 'react';
 import './App.css';
 import { auth } from './firebase/init'; 
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged} from "firebase/auth";
 
 function App() {
   const [user, setUser] = React.useState({});
+  const [loading, setLoading] = React.useState(true);
+  React.useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      setLoading(false);
+      console.log(user);
+      setUser(user);
+    });
+  }, []);
   function register() {
     console.log('register');
     createUserWithEmailAndPassword(auth, 'email@email.com', 'test123')
