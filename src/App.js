@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { auth, db } from './firebase/init'; 
-import {collection, addDoc, getDocs, getDoc, doc} from 'firebase/firestore';
+import {collection, addDoc, getDocs, getDoc, doc, query, where} from 'firebase/firestore';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged} from "firebase/auth";
 
 function App() {
@@ -10,8 +10,9 @@ function App() {
 
 function createPost() {
   const post = {
-    title: "Land a $400k job",
-    description: "Finish Frontend Simplified",
+    title: "Finish Firebase Section",
+    description: "Do Frontend Simplified",
+    uid: user.uid,
   };
   addDoc(collection(db, "posts"), post)
 }
@@ -23,6 +24,14 @@ async function getAllPosts() {
 
 function getPostById() {
   const postRef = doc(db, "posts", "id");
+}
+
+
+async function getPostByUid() {
+  const postCollectionRef = await query(
+    collection(db, "posts"),
+    where("uid", "==", user.uid),
+  );
 }
 
 
@@ -79,6 +88,7 @@ function getPostById() {
       <button onClick={createPost}>Create Post</button>
       <button onClick={getAllPosts}>Get All Posts</button>
       <button onClick={getPostById}>Get Post By ID</button>
+      <button onClick={getPostByUid}>Get Post By UID</button>
     </div>
   );
 }
