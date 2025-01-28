@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { auth, db } from './firebase/init'; 
-import {collection, addDoc} from 'firebase/firestore';
+import {collection, addDoc, getDocs} from 'firebase/firestore';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged} from "firebase/auth";
 
 function App() {
@@ -14,6 +14,10 @@ function createPost() {
     description: "Finish Frontend Simplified",
   };
   addDoc(collection(db, "posts"), post)
+}
+
+async function getAllPosts() {
+  const data = await getDocs(collection(db, "posts"));
 }
 
 
@@ -68,6 +72,7 @@ function createPost() {
       <button onClick={logout}>Logout</button>
       {loading ? <h1>Loading...</h1> : <h1>{user?.email}</h1>}
       <button onClick={createPost}>Create Post</button>
+      <button onClick={getAllPosts}>Get All Posts</button>
     </div>
   );
 }
