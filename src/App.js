@@ -1,12 +1,28 @@
 import React from 'react';
 import './App.css';
 import { auth, db } from './firebase/init'; 
-import {collection, addDoc, getDocs, getDoc, doc, query, where} from 'firebase/firestore';
+import {collection, addDoc, getDocs, getDoc, doc, query, where, updateDoc, deleteDoc} from 'firebase/firestore';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged} from "firebase/auth";
 
 function App() {
   const [user, setUser] = React.useState({});
   const [loading, setLoading] = React.useState(true);
+
+  function updatePost() {
+    const postRef = doc(db, "posts", "id");
+    const newPost = {
+      desciption: "Finish Frontend Simplified",
+      uid: "1",
+      title: "Finish Firebase Section",
+    };
+    updateDoc(postRef, newPost);
+  }
+
+
+  function deletePost() {
+    const postRef = doc(db, "posts", "id");
+    deleteDoc(postRef);
+  }
 
 function createPost() {
   const post = {
@@ -89,6 +105,8 @@ async function getPostByUid() {
       <button onClick={getAllPosts}>Get All Posts</button>
       <button onClick={getPostById}>Get Post By ID</button>
       <button onClick={getPostByUid}>Get Post By UID</button>
+      <button onClick={updatePost}>Update Post</button>
+      <button onClick={deletePost}>Delete Post</button>
     </div>
   );
 }
